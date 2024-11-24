@@ -6,7 +6,7 @@ const HeroSection = () => {
             <div className="container">
                 <h1 className="display-4">Bienvenue sur votre portail de Cross Origin</h1>
                 <p className="lead">
-                    Découvrez les derniers articles des magasins le Monde , L'Equipe, Le Parisien et le journal Libération.
+                    Découvrez les derniers articles des journals le Monde , L'Equipe, Le Parisien et le journal Libération.
                 </p>
                 <a href="#articles" className="btn btn-light btn-lg mt-3">Voir les articles</a>
             </div>

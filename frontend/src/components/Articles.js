@@ -11,7 +11,6 @@ const Articles = () => {
     const [selectedArticle, setSelectedArticle] = useState(null);
     const [currentJournal, setCurrentJournal] = useState('lemonde');
 
-    // Fonction pour normaliser les données
     const normalizeArticles = (data, journal) => {
         if (journal === 'leparisien') {
             return data.map((article) => ({
@@ -23,23 +22,22 @@ const Articles = () => {
                     .filter((credit) => credit.type === 'author')
                     .map((credit) => credit.name)
                     .join(', ') || 'Inconnu',
-                published_at: new Date(article.publish_date * 1000), // Convertir le timestamp
+                published_at: new Date(article.publish_date * 1000),
             }));
         } else if (journal === 'lemonde') {
-            // Supposons que Le Monde retourne déjà la structure correcte
+
             return data.map((article) => ({
                 id: article.id,
                 title: article.title,
                 content: article.content,
                 category: article.category,
                 author: article.author || 'Inconnu',
-                published_at: new Date(article.published_at), // Date au format ISO
+                published_at: new Date(article.published_at),
             }));
         }
         return [];
     };
 
-    // Valide les articles pour vérifier qu'ils ont tous les champs nécessaires
     const isValidArticle = (article) => {
         return (
             article &&
@@ -67,7 +65,7 @@ const Articles = () => {
                 });
 
                 const normalizedData = normalizeArticles(
-                    response.data.data || response.data, // Accéder à la clé `data` si elle existe
+                    response.data.data || response.data,
                     currentJournal
                 );
 				const sortedById = [...normalizedData].sort((a, b) => a.id - b.id);
