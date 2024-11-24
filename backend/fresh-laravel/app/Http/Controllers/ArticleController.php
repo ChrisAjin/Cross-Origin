@@ -16,10 +16,7 @@ class ArticleController extends Controller
 	}
 	public function indexJson()
 	{
-		// Récupérer tous les articles avec leurs relations éventuelles
 		$articles = \App\Models\Article::with('category', 'source')->get();
-
-		// Retourner les articles sous forme de JSON
 		return response()->json($articles);
 	}
 

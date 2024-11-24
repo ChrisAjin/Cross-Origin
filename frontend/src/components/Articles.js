@@ -95,11 +95,11 @@ const Articles = () => {
     };
 
     const handleSelectArticle = (article) => {
-        setSelectedArticle(article); // Mettre l'article en mode focus
+        setSelectedArticle(article);
     };
 
     const handleCloseFocus = () => {
-        setSelectedArticle(null); // Quitter le mode focus
+        setSelectedArticle(null);
     };
 
     if (loading) {

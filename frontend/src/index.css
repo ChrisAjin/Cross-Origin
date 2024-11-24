@@ -13,11 +13,11 @@ code {
 }
 
 .text-orange {
-    color: #ff7900; /* Couleur principale d'Orange */
+    color: #ff7900;
 }
 
 .bg-orange {
-    background-color: #000000; /* Couleur principale d'Orange */
+    background-color: #000000;
     color: white;
 }
 
@@ -76,14 +76,14 @@ code {
 }
 
 .article-card {
-    cursor: pointer; /* Indique que c'est cliquable */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animation douce */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .article-card:hover {
-    transform: scale(1.05); /* Agrandir légèrement au survol */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Ombre visible */
-    border-color: #ff7900; /* Optionnel : bordure orange */
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-color: #ff7900;
 }
 
 .blur-background {
