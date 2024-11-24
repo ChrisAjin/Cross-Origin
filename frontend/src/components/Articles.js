@@ -11,20 +11,42 @@ const Articles = () => {
     const [selectedArticle, setSelectedArticle] = useState(null);
     const [currentJournal, setCurrentJournal] = useState('lemonde');
 
-    // Sanitize input to prevent injection attacks
-    const sanitizeInput = (input) => {
-        const div = document.createElement('div');
-        div.innerText = input;
-        return div.innerHTML;
+    // Fonction pour normaliser les données
+    const normalizeArticles = (data, journal) => {
+        if (journal === 'leparisien') {
+            return data.map((article) => ({
+                id: article.id,
+                title: article.headlines.basic,
+                content: article.content,
+                category: article.keywords.join(', '),
+                author: article.credits
+                    .filter((credit) => credit.type === 'author')
+                    .map((credit) => credit.name)
+                    .join(', ') || 'Inconnu',
+                published_at: new Date(article.publish_date * 1000), // Convertir le timestamp
+            }));
+        } else if (journal === 'lemonde') {
+            // Supposons que Le Monde retourne déjà la structure correcte
+            return data.map((article) => ({
+                id: article.id,
+                title: article.title,
+                content: article.content,
+                category: article.category,
+                author: article.author || 'Inconnu',
+                published_at: new Date(article.published_at), // Date au format ISO
+            }));
+        }
+        return [];
     };
 
-    // Validate article fields
+    // Valide les articles pour vérifier qu'ils ont tous les champs nécessaires
     const isValidArticle = (article) => {
         return (
+            article &&
             typeof article.title === 'string' &&
             typeof article.content === 'string' &&
             typeof article.category === 'string' &&
-            !isNaN(new Date(article.published_at))
+            article.published_at instanceof Date
         );
     };
 
@@ -35,16 +57,22 @@ const Articles = () => {
                 const url =
                     currentJournal === 'lemonde'
                         ? 'http://localhost/api/lemonde'
-                        : 'http://localhost/api/lequipe';
+                        : 'http://localhost/api/leparisien';
                 const response = await axios.get(url, {
-                    headers: currentJournal === 'lequipe'
+                    headers: currentJournal === 'leparisien'
                         ? {
-                              Authorization: 'vQS97b12DxqeAqs15CbvSQdmBP13',
+                              Authorization: 'ApiToken o8L1WFtdEzBjlq7ro9uf6squ05QWKh2AbMsNYcaM8L',
                           }
                         : {},
                 });
-                setArticles(response.data);
-                setFilteredArticles(response.data);
+
+                const normalizedData = normalizeArticles(
+                    response.data.data || response.data, // Accéder à la clé `data` si elle existe
+                    currentJournal
+                );
+				const sortedById = [...normalizedData].sort((a, b) => a.id - b.id);
+                setArticles(sortedById);
+                setFilteredArticles(sortedById);
             } catch (error) {
                 console.error(`Erreur lors de la récupération des articles de ${currentJournal} :`, error);
             } finally {
@@ -56,14 +84,13 @@ const Articles = () => {
     }, [currentJournal]);
 
     useEffect(() => {
-        const sanitizedSearch = sanitizeInput(search);
-
+        const sanitizedSearch = search.toLowerCase();
         let updatedArticles = articles.filter(
             (article) =>
-                article.title.toLowerCase().includes(sanitizedSearch.toLowerCase()) ||
-                article.content.toLowerCase().includes(sanitizedSearch.toLowerCase()) ||
-				article.category.toLowerCase().includes(sanitizedSearch.toLowerCase()) ||
-				article.author.toLowerCase().includes(sanitizedSearch.toLowerCase())
+                article.title.toLowerCase().includes(sanitizedSearch) ||
+                article.content.toLowerCase().includes(sanitizedSearch) ||
+                article.category.toLowerCase().includes(sanitizedSearch) ||
+                article.author.toLowerCase().includes(sanitizedSearch)
         );
 
         if (sortCriteria) {
@@ -71,7 +98,7 @@ const Articles = () => {
                 let comparison = 0;
 
                 if (sortCriteria === 'date') {
-                    comparison = new Date(a.published_at) - new Date(b.published_at);
+                    comparison = a.published_at - b.published_at;
                 } else if (sortCriteria === 'category') {
                     comparison = a.category.localeCompare(b.category);
                 } else if (sortCriteria === 'title') {
@@ -119,16 +146,15 @@ const Articles = () => {
                     Articles Le Monde
                 </button>
                 <button
-                    className={`btn btn-${currentJournal === 'lequipe' ? 'orange' : 'outline-orange'} me-2`}
-                    onClick={() => setCurrentJournal('lequipe')}
+                    className={`btn btn-${currentJournal === 'leparisien' ? 'orange' : 'outline-orange'} me-2`}
+                    onClick={() => setCurrentJournal('leparisien')}
                 >
-                    Articles L'Équipe
+                    Articles Le Parisien
                 </button>
             </div>
 
             {/* Barre de recherche et tri */}
             <div className="row mb-4 align-items-center">
-                {/* Barre de recherche */}
                 <div className="col-md-8">
                     <input
                         type="text"
@@ -138,8 +164,6 @@ const Articles = () => {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-
-                {/* Boutons de tri */}
                 <div className="col-md-4 d-flex justify-content-end">
                     <button
                         className={`btn btn-outline-orange me-2 ${
@@ -174,10 +198,10 @@ const Articles = () => {
                     <div className="focus-article">
                         <h3 className="text-orange">{selectedArticle.title}</h3>
                         <p className="text-muted">
-                            Publié le : {new Date(selectedArticle.published_at).toLocaleDateString()}
+                            Publié le : {selectedArticle.published_at.toLocaleDateString()}
                         </p>
                         <p>
-                            <strong>Auteur :</strong> {selectedArticle.author}
+                            <strong>Auteur(s) :</strong> {selectedArticle.author}
                         </p>
                         <p>
                             <strong>Catégorie :</strong> {selectedArticle.category}
@@ -204,13 +228,11 @@ const Articles = () => {
                                 <div className="card h-100 shadow-sm article-card">
                                     <div className="card-body">
                                         <h5 className="card-title text-orange">{article.title}</h5>
-                                        <p className="card-text">
-                                            {article.content.substring(0, 100)}...
-                                        </p>
+                                        <p className="card-text">{article.content.substring(0, 100)}...</p>
                                         <p className="text-muted">
                                             <small>
                                                 Publié le :{' '}
-                                                {new Date(article.published_at).toLocaleDateString()}
+                                                {article.published_at.toLocaleDateString()}
                                             </small>
                                         </p>
                                         <span className="badge bg-orange">{article.category}</span>

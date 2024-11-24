@@ -11,7 +11,7 @@ class LequipeController extends Controller
         $url = 'https://api-catch-the-dev.unit41.fr/lequipe';
 
         $response = Http::withHeaders([
-            'Authorization' => 'vQS97b12DxqeAqs15CbvSQdmBP13',
+            'Authorization' => 'ApiToken vQS97b12DxqeAqs15CbvSQdmBP13',
         ])->get($url);
 
         if ($response->successful()) {

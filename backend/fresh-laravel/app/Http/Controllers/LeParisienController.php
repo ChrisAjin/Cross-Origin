@@ -11,7 +11,7 @@ class LeParisienController extends Controller
         $url = 'https://api-catch-the-dev.unit41.fr/leparisien';
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer o8L1WFtdEzBjlq7ro9uf6squ05QWKh2AbMsNYcaM8L',
+            'Authorization' => 'ApiToken o8L1WFtdEzBjlq7ro9uf6squ05QWKh2AbMsNYcaM8L',
         ])->get($url);
 
         if ($response->successful()) {
