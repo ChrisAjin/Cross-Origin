@@ -1,0 +1,120 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.text-orange {
+    color: #ff7900; /* Couleur principale d'Orange */
+}
+
+.bg-orange {
+    background-color: #000000; /* Couleur principale d'Orange */
+    color: white;
+}
+
+.bg-orange:hover {
+    background-color: #e66b00;
+}
+
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+}
+
+.btn-outline-orange {
+    border-color: #ff7900;
+    color: #ff7900;
+}
+
+.btn-outline-orange.active, .btn-outline-orange:hover {
+    background-color: #ff7900;
+    color: white;
+    border-color: #ff7900;
+}
+
+.blur-background {
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+.focus-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.focus-article {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.focus-article h3 {
+    margin-bottom: 1rem;
+}
+
+.article-card {
+    cursor: pointer; /* Indique que c'est cliquable */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animation douce */
+}
+
+.article-card:hover {
+    transform: scale(1.05); /* Agrandir légèrement au survol */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Ombre visible */
+    border-color: #ff7900; /* Optionnel : bordure orange */
+}
+
+.blur-background {
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+.focus-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.focus-article {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.focus-article h3 {
+    margin-bottom: 1rem;
+}
